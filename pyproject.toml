@@ -1,0 +1,24 @@
+[project]
+name = "what-does-gpt2-look-at"
+version = "0.1.0"
+description = "GPT-2 attention analysis research scripts"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "torch==2.11.0",
+    "huggingface-hub==0.36.2",
+    "tokenizers==0.22.2",
+    "safetensors==0.8.0",
+    "pyarrow==25.0.1",
+    "matplotlib==3.11.2",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true

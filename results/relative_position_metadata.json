@@ -1,0 +1,278 @@
+{
+  "dataset": {
+    "id": "wikimedia/wikipedia",
+    "revision": "ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619",
+    "config": "20231101.en",
+    "split": "train",
+    "language": "en",
+    "snapshot_date": "2023-11-01",
+    "file": "20231101.en/train-00040-of-00041.parquet",
+    "source_sha256": "fed6addb1da9364fcf42c6953539eecc21bbc2cf3cd33743684e6872ce6c468a",
+    "shard_count": 41,
+    "shard_selection": "random.Random(42).randrange(41)",
+    "selected_shard": 40,
+    "url": "https://huggingface.co/datasets/wikimedia/wikipedia/tree/ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619/20231101.en",
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GFDL"
+    ],
+    "attribution": "Wikipedia contributors; per-article URLs in passages.jsonl"
+  },
+  "corpus_sha256": "89c8065183c1d491af0103c706d90a2de3c4097798a0756c6aecec0ecd76d1e8",
+  "model": {
+    "id": "openai-community/gpt2",
+    "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"
+  },
+  "passage_count": 1000,
+  "offsets": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    16,
+    32
+  ],
+  "query_positions": "real tokens with zero-based i >= 32",
+  "averaging": "equal weight per eligible query token across all passages",
+  "n_queries": 46679,
+  "uniform_baseline": 0.017406697573014468,
+  "indexing": "zero-based layers and heads; offset d means key position i-d",
+  "batch_size": 16,
+  "weight_dtype": "torch.float16",
+  "attention_dtype": "torch.float32",
+  "accumulation_dtype": "torch.float64",
+  "job_id": "499296",
+  "hostname": "25a-hgpn012",
+  "device": "cuda:0",
+  "top_heads": {
+    "0": [
+      {
+        "layer": 0,
+        "head": 3,
+        "mean_attention": 0.8490747383810477,
+        "enrichment_over_uniform": 48.778622988048284
+      },
+      {
+        "layer": 0,
+        "head": 1,
+        "mean_attention": 0.8302462896912618,
+        "enrichment_over_uniform": 47.696944593234576
+      },
+      {
+        "layer": 1,
+        "head": 11,
+        "mean_attention": 0.6561646385360538,
+        "enrichment_over_uniform": 37.69610150252183
+      },
+      {
+        "layer": 0,
+        "head": 5,
+        "mean_attention": 0.6304948592677654,
+        "enrichment_over_uniform": 36.22139447319513
+      },
+      {
+        "layer": 0,
+        "head": 4,
+        "mean_attention": 0.5822052404789544,
+        "enrichment_over_uniform": 33.447196864128024
+      }
+    ],
+    "1": [
+      {
+        "layer": 4,
+        "head": 11,
+        "mean_attention": 0.9986214083314525,
+        "enrichment_over_uniform": 57.3699522349151
+      },
+      {
+        "layer": 2,
+        "head": 2,
+        "mean_attention": 0.5541133177041322,
+        "enrichment_over_uniform": 31.833339746372786
+      },
+      {
+        "layer": 3,
+        "head": 7,
+        "mean_attention": 0.3760516881753428,
+        "enrichment_over_uniform": 21.6038502764783
+      },
+      {
+        "layer": 3,
+        "head": 2,
+        "mean_attention": 0.3319865646301519,
+        "enrichment_over_uniform": 19.072346333219997
+      },
+      {
+        "layer": 2,
+        "head": 9,
+        "mean_attention": 0.3165753465832163,
+        "enrichment_over_uniform": 18.186984938142533
+      }
+    ],
+    "2": [
+      {
+        "layer": 2,
+        "head": 9,
+        "mean_attention": 0.19573424949754584,
+        "enrichment_over_uniform": 11.244766485803249
+      },
+      {
+        "layer": 2,
+        "head": 5,
+        "mean_attention": 0.19272089520547797,
+        "enrichment_over_uniform": 11.071651839591468
+      },
+      {
+        "layer": 2,
+        "head": 3,
+        "mean_attention": 0.18417662085017514,
+        "enrichment_over_uniform": 10.580790530634795
+      },
+      {
+        "layer": 2,
+        "head": 2,
+        "mean_attention": 0.17234180818658457,
+        "enrichment_over_uniform": 9.900890589020479
+      },
+      {
+        "layer": 3,
+        "head": 2,
+        "mean_attention": 0.1714677096500878,
+        "enrichment_over_uniform": 9.850674370071983
+      }
+    ],
+    "4": [
+      {
+        "layer": 1,
+        "head": 1,
+        "mean_attention": 0.0836362399541599,
+        "enrichment_over_uniform": 4.804830991251369
+      },
+      {
+        "layer": 2,
+        "head": 3,
+        "mean_attention": 0.08109853824121947,
+        "enrichment_over_uniform": 4.659042181955652
+      },
+      {
+        "layer": 2,
+        "head": 8,
+        "mean_attention": 0.07877530657394057,
+        "enrichment_over_uniform": 4.5255744947315915
+      },
+      {
+        "layer": 2,
+        "head": 5,
+        "mean_attention": 0.0764510568177789,
+        "enrichment_over_uniform": 4.392048319165415
+      },
+      {
+        "layer": 0,
+        "head": 7,
+        "mean_attention": 0.07446875822779647,
+        "enrichment_over_uniform": 4.2781669478330615
+      }
+    ],
+    "8": [
+      {
+        "layer": 1,
+        "head": 2,
+        "mean_attention": 0.039892546740245255,
+        "enrichment_over_uniform": 2.2917929476806966
+      },
+      {
+        "layer": 2,
+        "head": 10,
+        "mean_attention": 0.03979152330774016,
+        "enrichment_over_uniform": 2.2859892372364072
+      },
+      {
+        "layer": 2,
+        "head": 6,
+        "mean_attention": 0.038413209026910256,
+        "enrichment_over_uniform": 2.2068062517764484
+      },
+      {
+        "layer": 1,
+        "head": 1,
+        "mean_attention": 0.03782936083543743,
+        "enrichment_over_uniform": 2.173264668772331
+      },
+      {
+        "layer": 1,
+        "head": 4,
+        "mean_attention": 0.03234981504282132,
+        "enrichment_over_uniform": 1.858469414265754
+      }
+    ],
+    "16": [
+      {
+        "layer": 0,
+        "head": 9,
+        "mean_attention": 0.021190544968445014,
+        "enrichment_over_uniform": 1.2173788209715684
+      },
+      {
+        "layer": 0,
+        "head": 8,
+        "mean_attention": 0.020766011186194734,
+        "enrichment_over_uniform": 1.1929897155442166
+      },
+      {
+        "layer": 0,
+        "head": 0,
+        "mean_attention": 0.020713742816339326,
+        "enrichment_over_uniform": 1.1899869420637121
+      },
+      {
+        "layer": 0,
+        "head": 6,
+        "mean_attention": 0.020280626349778997,
+        "enrichment_over_uniform": 1.1651047687081075
+      },
+      {
+        "layer": 1,
+        "head": 2,
+        "mean_attention": 0.02017818310633672,
+        "enrichment_over_uniform": 1.1592194913306746
+      }
+    ],
+    "32": [
+      {
+        "layer": 9,
+        "head": 11,
+        "mean_attention": 0.021852351569546798,
+        "enrichment_over_uniform": 1.2553990484343458
+      },
+      {
+        "layer": 10,
+        "head": 8,
+        "mean_attention": 0.021567518119312203,
+        "enrichment_over_uniform": 1.2390356084975152
+      },
+      {
+        "layer": 6,
+        "head": 9,
+        "mean_attention": 0.02153434336746541,
+        "enrichment_over_uniform": 1.2371297471641038
+      },
+      {
+        "layer": 9,
+        "head": 9,
+        "mean_attention": 0.0214697400362657,
+        "enrichment_over_uniform": 1.2334183406248265
+      },
+      {
+        "layer": 9,
+        "head": 1,
+        "mean_attention": 0.02140918835778527,
+        "enrichment_over_uniform": 1.2299396980950508
+      }
+    ]
+  },
+  "versions": {
+    "torch": "2.11.0",
+    "matplotlib": "3.11.2"
+  }
+}

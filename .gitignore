@@ -1,0 +1,41 @@
+# Python environments and bytecode
+/.venv/
+/.plot-dependencies/
+__pycache__/
+*.py[cod]
+
+# Local tool caches and packaging artifacts
+.cache/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.ipynb_checkpoints/
+/build/
+/dist/
+*.egg-info/
+
+# Downloaded source shards and model caches
+download_cache/
+
+# Slurm output and runtime logs
+/logs/
+slurm-*.out
+slurm-*.err
+*.log
+
+# Superseded experiment artifacts
+/archive/
+
+# Local environment settings
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system temporary files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Keep uv.lock, .python-version, frozen data, results, and figures tracked.

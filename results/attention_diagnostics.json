@@ -1,0 +1,27 @@
+{
+  "job_id": "499032",
+  "hostname": "25a-hgpn003",
+  "device": "cuda:0",
+  "dataset": "wikimedia/wikipedia",
+  "config": "20231101.en",
+  "corpus_sha256": "89c8065183c1d491af0103c706d90a2de3c4097798a0756c6aecec0ecd76d1e8",
+  "passage_count": 1000,
+  "shape_order": [
+    "batch",
+    "layer",
+    "head",
+    "query",
+    "key"
+  ],
+  "max_row_sum_error": 4.76837158203125e-07,
+  "max_future_mass": 0.0,
+  "max_padding_key_mass": 0.0,
+  "max_padding_query_mass": 0.0,
+  "first_batch_shape": [
+    16,
+    12,
+    12,
+    128,
+    128
+  ]
+}
