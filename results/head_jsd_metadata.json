@@ -1,0 +1,319 @@
+{
+  "corpus_sha256": "89c8065183c1d491af0103c706d90a2de3c4097798a0756c6aecec0ecd76d1e8",
+  "model": {
+    "id": "openai-community/gpt2",
+    "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"
+  },
+  "dataset": {
+    "id": "wikimedia/wikipedia",
+    "revision": "ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619",
+    "config": "20231101.en",
+    "split": "train",
+    "language": "en",
+    "snapshot_date": "2023-11-01",
+    "file": "20231101.en/train-00040-of-00041.parquet",
+    "source_sha256": "fed6addb1da9364fcf42c6953539eecc21bbc2cf3cd33743684e6872ce6c468a",
+    "shard_count": 41,
+    "shard_selection": "random.Random(42).randrange(41)",
+    "selected_shard": 40,
+    "url": "https://huggingface.co/datasets/wikimedia/wikipedia/tree/ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619/20231101.en",
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GFDL"
+    ],
+    "attribution": "Wikipedia contributors; per-article URLs in passages.jsonl"
+  },
+  "source_specification": "https://app.notion.com/p/3ef4aa3c576581478d9de382c4083d16",
+  "passage_count": 1000,
+  "n_queries": 78679,
+  "query_set": "all real query tokens including i=0 and final token; identical for every pair",
+  "averaging": "equal weight per real query across passages; compute JSD for same-query distributions before averaging",
+  "divergence": "JS(P,Q) = H((P+Q)/2) - (H(P)+H(Q))/2; natural logarithm; divergence in nats, no square root",
+  "support": "visible real keys j<=i; masked future/padding zeros contribute zero",
+  "head_order": "index = layer*12 + head; zero-based layers/heads",
+  "batch_size": 16,
+  "query_chunk": 128,
+  "pair_chunk": 256,
+  "weight_dtype": "torch.float16",
+  "attention_dtype": "torch.float32",
+  "accumulation_dtype": "torch.float64",
+  "diagnostics": {
+    "max_row_sum_error": 4.76837158203125e-07,
+    "max_future_attention": 0.0,
+    "max_padding_attention": 0.0,
+    "min_query_jsd": -5.960464477539063e-08,
+    "max_query_jsd": 0.6931473016738892
+  },
+  "formula_checks": "identical distributions zero; disjoint point masses ln(2); symmetry; independent direct KL agreement",
+  "mds": {
+    "parameters": {
+      "n_components": 2,
+      "dissimilarity": "precomputed",
+      "n_init": 8,
+      "init": "random",
+      "max_iter": 1000,
+      "eps": 1e-09,
+      "n_jobs": 1,
+      "random_state": 42,
+      "normalized_stress": false
+    },
+    "raw_stress": 11.474144997696959,
+    "stress1": 0.1174400504187886,
+    "n_iter": 256,
+    "pairwise_distance_correlation": 0.9764754598417523
+  },
+  "behavior_rules": "Exploratory descriptive thresholds: self/previous attention>=0.5; tested offsets 2/4/8/16/32>=0.25; lexical enrichment>=2; no-op-like candidate also gradient/other<=0.5; broad normalized entropy>=0.8; focused<=0.1. Flags may overlap; plot category uses this listed priority, with candidate before lexical groups.",
+  "behavior_source_sha256": {
+    "relative_position.csv": "2a37c24ea2aa8b58f2f1fdb5ffc2722fe8d2526891d769f48f2f4af97bcc8058",
+    "token_class_attention.csv": "fd69705c4710426c34944b2b00eab65e89f03b262e5fc4adc7c8730b237c4b50",
+    "token_class_gradient_importance.csv": "10c07a26062c88db01fa4c7924982e61f2133a305f098bc9e81cacf49a55387e",
+    "entropy_normalized.csv": "56afd143fb37d8926c6717ec3e6e1ac0024eaef5244259025aeaaca665519ca0"
+  },
+  "summary": {
+    "mean_same_layer_jsd": 0.1768000077398376,
+    "mean_different_layer_jsd": 0.25449479284689486,
+    "nearest_neighbor_same_layer_fraction": 0.20833333333333334,
+    "same_layer_random_neighbor_baseline": 0.07692307692307693,
+    "behavior_groups": {
+      "self": {
+        "n_heads": 5,
+        "heads": [
+          "L0H1",
+          "L0H3",
+          "L0H4",
+          "L0H5",
+          "L1H11"
+        ],
+        "mean_within_jsd": 0.1362956008700777,
+        "mean_to_other_heads_jsd": 0.5105141635453719
+      },
+      "previous-token": {
+        "n_heads": 2,
+        "heads": [
+          "L2H2",
+          "L4H11"
+        ],
+        "mean_within_jsd": 0.19923681671114257,
+        "mean_to_other_heads_jsd": 0.4908735504510127
+      },
+      "longer-offset": {
+        "n_heads": 0,
+        "heads": []
+      },
+      "broad": {
+        "n_heads": 16,
+        "heads": [
+          "L0H0",
+          "L0H2",
+          "L0H6",
+          "L0H8",
+          "L0H9",
+          "L0H10",
+          "L0H11",
+          "L1H2",
+          "L1H4",
+          "L1H6",
+          "L1H7",
+          "L1H8",
+          "L1H9",
+          "L1H10",
+          "L2H7",
+          "L11H0"
+        ],
+        "mean_within_jsd": 0.10779356242104426,
+        "mean_to_other_heads_jsd": 0.324697127228849
+      },
+      "focused": {
+        "n_heads": 5,
+        "heads": [
+          "L0H1",
+          "L4H11",
+          "L5H1",
+          "L6H9",
+          "L7H2"
+        ],
+        "mean_within_jsd": 0.4758940433405058,
+        "mean_to_other_heads_jsd": 0.3825664489721488
+      },
+      "article-enriched": {
+        "n_heads": 77,
+        "heads": [
+          "L1H3",
+          "L2H3",
+          "L2H4",
+          "L2H11",
+          "L3H0",
+          "L3H1",
+          "L3H2",
+          "L3H4",
+          "L3H5",
+          "L3H9",
+          "L3H10",
+          "L4H2",
+          "L4H4",
+          "L4H5",
+          "L4H8",
+          "L4H9",
+          "L4H10",
+          "L5H0",
+          "L5H1",
+          "L5H2",
+          "L5H4",
+          "L5H5",
+          "L5H6",
+          "L5H7",
+          "L5H8",
+          "L5H9",
+          "L5H11",
+          "L6H1",
+          "L6H2",
+          "L6H3",
+          "L6H5",
+          "L6H6",
+          "L6H9",
+          "L6H10",
+          "L6H11",
+          "L7H0",
+          "L7H1",
+          "L7H2",
+          "L7H3",
+          "L7H4",
+          "L7H6",
+          "L7H7",
+          "L7H9",
+          "L7H10",
+          "L7H11",
+          "L8H0",
+          "L8H1",
+          "L8H3",
+          "L8H4",
+          "L8H6",
+          "L8H7",
+          "L8H9",
+          "L8H10",
+          "L8H11",
+          "L9H1",
+          "L9H4",
+          "L9H5",
+          "L9H6",
+          "L9H7",
+          "L9H9",
+          "L9H10",
+          "L9H11",
+          "L10H1",
+          "L10H2",
+          "L10H5",
+          "L10H6",
+          "L10H8",
+          "L10H9",
+          "L10H10",
+          "L10H11",
+          "L11H1",
+          "L11H2",
+          "L11H3",
+          "L11H5",
+          "L11H6",
+          "L11H7",
+          "L11H9"
+        ],
+        "mean_within_jsd": 0.138630807949782,
+        "mean_to_other_heads_jsd": 0.2952086287914506
+      },
+      "punctuation-enriched": {
+        "n_heads": 11,
+        "heads": [
+          "L0H7",
+          "L0H8",
+          "L1H1",
+          "L1H5",
+          "L2H5",
+          "L2H6",
+          "L3H1",
+          "L3H8",
+          "L10H4",
+          "L11H8",
+          "L11H11"
+        ],
+        "mean_within_jsd": 0.24816414726973438,
+        "mean_to_other_heads_jsd": 0.3026508060407453
+      },
+      "no-op-like candidate": {
+        "n_heads": 1,
+        "heads": [
+          "L2H6"
+        ],
+        "mean_to_other_heads_jsd": 0.25985661777324814
+      }
+    },
+    "closest_pairs": [
+      {
+        "head_a": "L5H1",
+        "head_b": "L7H2",
+        "jsd": 0.015501083372466057
+      },
+      {
+        "head_a": "L5H1",
+        "head_b": "L6H9",
+        "jsd": 0.017907135642943165
+      },
+      {
+        "head_a": "L9H6",
+        "head_b": "L9H9",
+        "jsd": 0.01983586758971829
+      },
+      {
+        "head_a": "L6H9",
+        "head_b": "L7H2",
+        "jsd": 0.02124448377131238
+      },
+      {
+        "head_a": "L6H9",
+        "head_b": "L7H10",
+        "jsd": 0.02232392258879787
+      },
+      {
+        "head_a": "L1H8",
+        "head_b": "L1H9",
+        "jsd": 0.02616737573582482
+      },
+      {
+        "head_a": "L1H3",
+        "head_b": "L2H11",
+        "jsd": 0.028570133788400908
+      },
+      {
+        "head_a": "L9H6",
+        "head_b": "L10H1",
+        "jsd": 0.028735544506285977
+      },
+      {
+        "head_a": "L7H2",
+        "head_b": "L7H10",
+        "jsd": 0.029290073071072655
+      },
+      {
+        "head_a": "L10H10",
+        "head_b": "L11H6",
+        "jsd": 0.030179109345103997
+      }
+    ]
+  },
+  "job_id": "499530",
+  "hostname": "25a-hgpn003",
+  "device": "cuda:0",
+  "gpu": "NVIDIA H200",
+  "versions": {
+    "torch": "2.11.0+cu130",
+    "numpy": "2.5.3",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2"
+  },
+  "limitations": [
+    "One of 41 English shards; not a sample across the entire snapshot",
+    "Article openings only; exclude openings shorter than 33 GPT-2 tokens",
+    "2D MDS distorts divergence; groups are descriptive labels, not fitted clusters or significance tests.",
+    "Position-zero distributions are identical and dilute mean JSD uniformly.",
+    "Behavior sources use different documented query sets; Experiment 2 weights float32 versus float16 here.",
+    "Attention similarity does not establish causal importance."
+  ]
+}
