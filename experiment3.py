@@ -120,7 +120,10 @@ def main():
         fig, ax = plt.subplots(figsize=(8, 5))
         for h in range(12):
             ax.scatter(range(12), means[0,metric,:,h].numpy(), color='tab:blue', alpha=.65, s=22)
-        ax.plot(range(12), means[0,metric].mean(1).numpy(), color='black', label='Layer mean')
+        layer_mean, layer_std = means[0,metric].mean(1).numpy(), means[0,metric].std(1).numpy()
+        # Error bars: sample standard deviation across the 12 heads in each layer.
+        ax.errorbar(range(12), layer_mean, yerr=layer_std, color='black', marker='o', markersize=5,
+                    capsize=4, elinewidth=1, label='Layer mean ± 1 SD across heads')
         ax.axhline(baseline[0] if metric == 0 else 1, color='gray', linestyle='--', label='Causal uniform')
         ax.set(xlabel='Layer (zero-based)', ylabel='Mean entropy (nats)' if metric == 0 else 'Mean normalized entropy',
                title=f'GPT-2 {name} attention entropy\n{len(passages):,} Wikipedia openings; {int(counts[0,metric]):,} queries')
