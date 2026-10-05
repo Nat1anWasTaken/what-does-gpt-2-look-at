@@ -212,25 +212,71 @@ queries after excluding position zero. The matched Experiment 1/2 sets contained
 and padding attention were zero, and maximum attention row-sum error was
 `4.77e-7`. Output consistency checks passed in compute job `499427`.
 
-| Head | Raw entropy, all real queries (nats) | Normalized entropy, i > 0 | Pattern |
-| --- | --- | --- | --- |
-| L4H11 | 0.00540 | 0.00168 | Most focused; strongest previous-token head in Experiment 1 |
-| L5H1 | 0.12433 | 0.03294 | Second most focused; article enrichment in Experiment 2 |
-| L7H2 | 0.17297 | 0.04699 | Third most focused; highest article enrichment in Experiment 2 |
-| L0H11 | 3.34744 | 0.95567 | Broadest; close to causal-uniform attention |
-| L0H9 | 3.33491 | 0.95129 | Second broadest |
+### Our observations from Experiments 1–3
+
+The following are **our observations from the experiments** on the frozen
+1,000-passage Wikipedia sample. We rank heads by normalized entropy over all
+real queries with `i > 0`: lower values indicate focused attention, while values
+near one indicate broad, nearly uniform attention. Raw entropy identifies the
+same top-five focused and broad groups, although the order of L1H7 and L1H10
+reverses within the broad group. All layer/head labels are zero-based.
+
+| Most focused head | Normalized entropy | Observed behavior in Experiments 1–2 |
+| --- | --- | --- |
+| L4H11 | 0.00168 | Previous-token attention is 99.86%; little lexical enrichment. |
+| L5H1 | 0.03294 | Articles receive 21.88% attention, 2.87× uniform; none of the tested offsets dominates. |
+| L7H2 | 0.04699 | Articles receive 22.40%, 2.94× uniform, the strongest article enrichment. |
+| L6H9 | 0.06608 | Articles receive 21.04%, 2.76× uniform; none of the tested offsets dominates. |
+| L0H1 | 0.09515 | Self-attention is 83.02%; little lexical enrichment. |
+
+We observe different behaviors among the most focused heads. L4H11 and L0H1
+concentrate on fixed relative positions. L5H1, L7H2, and L6H9 have highly
+concentrated attention, but the offsets tested in Experiment 1 do not identify
+a dominant relative position. Their article enrichment is a clue about their
+lexical preferences; however, articles account for only about 21–22% of their
+attention. We therefore cannot conclude that articles explain their overall
+concentration or identify the remaining preferred keys from these aggregates.
+
+| Broadest head | Normalized entropy | Observed behavior in Experiments 1–2 |
+| --- | --- | --- |
+| L0H11 | 0.95567 | Tested offsets receive roughly 1.4–1.7% attention, near the 1.74% causal-uniform baseline. |
+| L0H9 | 0.95129 | Broad attention with a modest recent-token preference; previous-token attention is 3.56%. |
+| L1H8 | 0.92383 | Nearly flat attention across tested offsets; mild article enrichment of 1.59×. |
+| L1H10 | 0.91885 | Broad attention biased toward nearby tokens: self 4.82%, previous token 4.48%. |
+| L1H7 | 0.91876 | Mild recent-token preference and period enrichment of 1.97×. |
+
+We observe that broad attention can still have positional or lexical preferences.
+L0H11 is close to uniform, whereas L0H9 and L1H10 distribute attention widely
+while favoring nearby positions. High entropy does not imply an absence of
+structure in the attention distribution.
+
+Experiment 2B also separates attention concentration from no-op-like evidence.
+The article/other mean absolute edge-gradient ratios for L5H1, L7H2, and L6H9
+are 0.866, 0.953, and 0.844 respectively. These are only modest reductions in
+local loss sensitivity, so the heads' low entropy and article enrichment do not
+establish a no-op role. Among the broad heads, L0H9 and L1H7 have higher gradients
+on periods, commas, and articles than on other tokens, despite some lexical
+enrichment. For example, their period/other gradient ratios are 1.91 and 1.41.
+
+In contrast, Experiment 2's clearest period candidate, L2H6, combines period
+attention enrichment of 7.41× with a period/other gradient ratio of 0.241, yet
+its normalized entropy on the matched Experiment 2 queries is 0.65831. This is
+consistent with no-op-like behavior without placing the head among the most
+focused heads. A preference for a token class need not concentrate attention on
+a single key.
 
 The raw and normalized layer trends agree qualitatively: layer 1 is broadest on
 average (normalized layer mean 0.761), layer 7 is most focused (0.294), and layer
-11 rises again (0.490). Thus attention concentration does not change monotonically
-with depth, and heads within a layer differ substantially.
+11 rises again (0.490). In our sample, attention concentration therefore does
+not change monotonically with depth, and heads within a layer differ substantially.
 
-On the matched Experiment 1 query set, L4H11 has normalized entropy 0.00133 and
-99.86% previous-token attention; L0H11 has normalized entropy 0.96881 and self/
-previous attention near the causal-uniform baseline. On the matched Experiment 2
-query set, the article-enriched heads L5H1, L7H2, and L6H9 have normalized entropy
-0.03998, 0.05334, and 0.08037 respectively. These heads are concentrated, though
-entropy alone does not identify their preferred target. The period-enriched
-candidate L2H6 instead has normalized entropy 0.65831: a class preference need not
-mean attention is concentrated on a single key. These are descriptive comparisons
-of this frozen sample; they do not establish causal importance or no-op behavior.
+The rankings above use 77,679 queries. Positional comparisons use Experiment 1's
+46,679 real queries with `i >= 32`; lexical and gradient comparisons use
+Experiment 2's 45,679 queries with `i >= 32` and a real next-token target.
+Matched-query entropy values are available in
+`results/entropy_behavior_comparison.csv`: for example, L4H11 has normalized
+entropy 0.00133 on the Experiment 1 set, while L5H1, L7H2, and L6H9 have values
+0.03998, 0.05334, and 0.08037 on the Experiment 2 set. Experiment 2 uses float32
+weights, whereas Experiments 1 and 3 use float16 weights. These comparisons are
+our descriptive observations, with no significance tests; attention and local
+gradients do not establish causal importance or prove no-op behavior.
