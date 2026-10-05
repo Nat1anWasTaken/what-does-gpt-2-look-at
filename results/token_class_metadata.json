@@ -1,0 +1,192 @@
+{
+  "corpus_sha256": "89c8065183c1d491af0103c706d90a2de3c4097798a0756c6aecec0ecd76d1e8",
+  "model": {
+    "id": "openai-community/gpt2",
+    "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"
+  },
+  "dataset": {
+    "id": "wikimedia/wikipedia",
+    "revision": "ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619",
+    "config": "20231101.en",
+    "split": "train",
+    "language": "en",
+    "snapshot_date": "2023-11-01",
+    "file": "20231101.en/train-00040-of-00041.parquet",
+    "source_sha256": "fed6addb1da9364fcf42c6953539eecc21bbc2cf3cd33743684e6872ce6c468a",
+    "shard_count": 41,
+    "shard_selection": "random.Random(42).randrange(41)",
+    "selected_shard": 40,
+    "url": "https://huggingface.co/datasets/wikimedia/wikipedia/tree/ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619/20231101.en",
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GFDL"
+    ],
+    "attribution": "Wikipedia contributors; per-article URLs in passages.jsonl"
+  },
+  "source_specification": "https://app.notion.com/p/3ef4aa3c576581478d9de382c4083d16",
+  "passage_count": 1000,
+  "n_queries": 45679,
+  "n_loss_tokens": 77679,
+  "query_set": "real zero-based i >= 32 with a real next-token target; final real token excluded",
+  "averaging": "equal weight per eligible query token across passages for attention and uniform baseline",
+  "token_classes": {
+    "period": "single token with whitespace-stripped source span exactly .",
+    "comma": "single token with whitespace-stripped source span exactly ,",
+    "articles": "complete case-insensitive word the/a/an in one token, with Unicode word boundaries",
+    "other": "all remaining real tokens; includes multi-character punctuation tokens"
+  },
+  "loss": "summed next-token cross-entropy over all real within-passage transitions; final layer norm applied",
+  "gradient": "absolute derivative of summed corpus loss with respect to post-softmax attention probabilities; unconstrained edge partial derivatives",
+  "gradient_averaging": "sum absolute gradients / visible class edge count; attention-weighted gradient = sum(A*abs(grad))/sum(A)",
+  "gradient_context": "includes downstream loss terms within each passage; not an isolated per-query loss derivative",
+  "indexing": "zero-based layers/heads",
+  "batch_size": 4,
+  "weight_dtype": "torch.float32",
+  "accumulation_dtype": "torch.float64",
+  "mean_next_token_loss": 3.516700569115215,
+  "uniform_baseline": {
+    "period": 0.026477806051478744,
+    "comma": 0.04220193391985708,
+    "articles": 0.07622732246537457,
+    "other": 0.8550929375632901
+  },
+  "n_edges": {
+    "period": 80788.0,
+    "comma": 126748.0,
+    "articles": 227602.0,
+    "other": 2552571.0
+  },
+  "diagnostics": {
+    "max_row_sum_error": 4.76837158203125e-07,
+    "future_mass": 0.0,
+    "padding_mass": 0.0,
+    "finite_gradients": true
+  },
+  "top_five_heads_by_enrichment": {
+    "period": [
+      {
+        "layer": 2,
+        "head": 6,
+        "mean_attention": 0.19631423930337571,
+        "enrichment": 7.414294028806509,
+        "gradient_ratio_to_other": 0.24114676486708672
+      },
+      {
+        "layer": 1,
+        "head": 1,
+        "mean_attention": 0.09840775516962215,
+        "enrichment": 3.716612886214801,
+        "gradient_ratio_to_other": 0.5787601182092605
+      },
+      {
+        "layer": 3,
+        "head": 1,
+        "mean_attention": 0.07869169644291868,
+        "enrichment": 2.9719870403886377,
+        "gradient_ratio_to_other": 0.7618623777424789
+      },
+      {
+        "layer": 2,
+        "head": 5,
+        "mean_attention": 0.06911687984214981,
+        "enrichment": 2.6103703497099127,
+        "gradient_ratio_to_other": 0.8277100637322874
+      },
+      {
+        "layer": 0,
+        "head": 7,
+        "mean_attention": 0.06154206591130834,
+        "enrichment": 2.32428871907502,
+        "gradient_ratio_to_other": 0.8881140147946736
+      }
+    ],
+    "comma": [
+      {
+        "layer": 2,
+        "head": 5,
+        "mean_attention": 0.1037720944209423,
+        "enrichment": 2.4589416830519917,
+        "gradient_ratio_to_other": 0.716622108108226
+      },
+      {
+        "layer": 1,
+        "head": 5,
+        "mean_attention": 0.09831498174377817,
+        "enrichment": 2.329632142699472,
+        "gradient_ratio_to_other": 1.1786087830262746
+      },
+      {
+        "layer": 1,
+        "head": 1,
+        "mean_attention": 0.08775020022096383,
+        "enrichment": 2.079293342044572,
+        "gradient_ratio_to_other": 0.6487378730829982
+      },
+      {
+        "layer": 0,
+        "head": 8,
+        "mean_attention": 0.08393752241227771,
+        "enrichment": 1.9889496668962598,
+        "gradient_ratio_to_other": 1.0926217496996284
+      },
+      {
+        "layer": 2,
+        "head": 6,
+        "mean_attention": 0.07561410297692658,
+        "enrichment": 1.7917212779992584,
+        "gradient_ratio_to_other": 0.2597680348728435
+      }
+    ],
+    "articles": [
+      {
+        "layer": 7,
+        "head": 2,
+        "mean_attention": 0.22396762668737313,
+        "enrichment": 2.9381541872877404,
+        "gradient_ratio_to_other": 0.9531208352170241
+      },
+      {
+        "layer": 5,
+        "head": 1,
+        "mean_attention": 0.218824909549722,
+        "enrichment": 2.8706886516855006,
+        "gradient_ratio_to_other": 0.8664051296364466
+      },
+      {
+        "layer": 6,
+        "head": 9,
+        "mean_attention": 0.21037324108155916,
+        "enrichment": 2.759814122778862,
+        "gradient_ratio_to_other": 0.844250250076537
+      },
+      {
+        "layer": 8,
+        "head": 1,
+        "mean_attention": 0.209268554349576,
+        "enrichment": 2.7453221178617935,
+        "gradient_ratio_to_other": 0.9443530336301095
+      },
+      {
+        "layer": 7,
+        "head": 11,
+        "mean_attention": 0.20496687153072257,
+        "enrichment": 2.6888898219378823,
+        "gradient_ratio_to_other": 0.8602106320320143
+      }
+    ]
+  },
+  "job_id": "499363",
+  "hostname": "25a-hgpn009",
+  "device": "cuda:0",
+  "gpu": "NVIDIA H200",
+  "versions": {
+    "torch": "2.11.0+cu130",
+    "tokenizers": "0.22.2",
+    "matplotlib": "3.11.2"
+  },
+  "interpretation": "High enrichment plus lower gradient than ordinary keys is consistent with no-op-like behavior, not proof of causal irrelevance. Comparisons are descriptive, without significance tests.",
+  "limitations": [
+    "One of 41 English shards; not a sample across the entire snapshot",
+    "Article openings only; exclude openings shorter than 33 GPT-2 tokens"
+  ]
+}
