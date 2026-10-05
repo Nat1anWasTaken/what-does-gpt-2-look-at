@@ -168,3 +168,69 @@ gradient ratio is 1.18, so an attention preference does not uniformly imply low
 sensitivity. The five most article-enriched heads have gradient ratios of
 0.84–0.95, a much smaller reduction; the no-op interpretation there is inconclusive.
 These comparisons describe this frozen sample and are not causal ablation tests.
+
+## Experiment 3: focused versus broad attention
+
+```bash
+sbatch --exclude=25a-hgpn001 experiment3.sbatch
+```
+
+`experiment3.py` follows Experiment 3 on the lab Notion page. For every head and
+real query, it computes `H = -sum_j A[i,j] * ln(A[i,j])` over visible keys, with
+`0 * ln(0) = 0`. Raw entropy is measured in nats and averaged over **all real
+queries**, including position zero and each passage's final token. Position zero
+has one visible key and hence zero entropy. Padding is excluded.
+
+The normalized metric divides each query's entropy by `ln(i+1)` **before**
+averaging. Position zero is excluded because its denominator is zero. Equal
+weight is assigned to each eligible query token across passages. The raw
+causal-uniform baseline is the average `ln(i+1)` on the same query set; the
+normalized uniform baseline is one.
+
+Primary figures show one point per head by zero-based layer, plus the layer mean:
+`figures/entropy_raw.png`/`.svg` and `figures/entropy_normalized.png`/`.svg`.
+`results/entropy_raw.csv` and `results/entropy_normalized.csv` contain 144 heads
+for each of three query sets: the primary `all_real` set, Experiment 1's real
+`i >= 32` set, and Experiment 2's real `i >= 32` queries with next-token targets.
+The latter two permit comparisons without changing query eligibility.
+
+`results/entropy_behavior_comparison.csv` joins the matched-query entropy values
+with all positional and lexical attention results from Experiments 1 and 2.
+`results/entropy_metadata.json` records corpus/model identity, definitions,
+counts, baselines, top five focused/broad heads, comparison-source hashes,
+execution details, and attention/entropy diagnostics. Like Experiment 1,
+Experiment 3 uses float16 weights and float32 attention; Experiment 2 uses
+float32 weights, which limits exact cross-experiment numerical comparisons.
+Entropy describes attention concentration and does not establish causal
+importance for predictions.
+
+Experiment 3 completed in Slurm job `499426` on `25a-hgpn009`, using all 1,000
+passages. Raw entropy used 78,679 real queries; normalized entropy used 77,679
+queries after excluding position zero. The matched Experiment 1/2 sets contained
+46,679 and 45,679 queries respectively. The all-query raw uniform baseline was
+3.47909 nats. All entropy values were finite and within causal bounds, future
+and padding attention were zero, and maximum attention row-sum error was
+`4.77e-7`. Output consistency checks passed in compute job `499427`.
+
+| Head | Raw entropy, all real queries (nats) | Normalized entropy, i > 0 | Pattern |
+| --- | --- | --- | --- |
+| L4H11 | 0.00540 | 0.00168 | Most focused; strongest previous-token head in Experiment 1 |
+| L5H1 | 0.12433 | 0.03294 | Second most focused; article enrichment in Experiment 2 |
+| L7H2 | 0.17297 | 0.04699 | Third most focused; highest article enrichment in Experiment 2 |
+| L0H11 | 3.34744 | 0.95567 | Broadest; close to causal-uniform attention |
+| L0H9 | 3.33491 | 0.95129 | Second broadest |
+
+The raw and normalized layer trends agree qualitatively: layer 1 is broadest on
+average (normalized layer mean 0.761), layer 7 is most focused (0.294), and layer
+11 rises again (0.490). Thus attention concentration does not change monotonically
+with depth, and heads within a layer differ substantially.
+
+On the matched Experiment 1 query set, L4H11 has normalized entropy 0.00133 and
+99.86% previous-token attention; L0H11 has normalized entropy 0.96881 and self/
+previous attention near the causal-uniform baseline. On the matched Experiment 2
+query set, the article-enriched heads L5H1, L7H2, and L6H9 have normalized entropy
+0.03998, 0.05334, and 0.08037 respectively. These heads are concentrated, though
+entropy alone does not identify their preferred target. The period-enriched
+candidate L2H6 instead has normalized entropy 0.65831: a class preference need not
+mean attention is concentrated on a single key. These are descriptive comparisons
+of this frozen sample; they do not establish causal importance or no-op behavior.

@@ -1,0 +1,433 @@
+{
+  "dataset": {
+    "id": "wikimedia/wikipedia",
+    "revision": "ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619",
+    "config": "20231101.en",
+    "split": "train",
+    "language": "en",
+    "snapshot_date": "2023-11-01",
+    "file": "20231101.en/train-00040-of-00041.parquet",
+    "source_sha256": "fed6addb1da9364fcf42c6953539eecc21bbc2cf3cd33743684e6872ce6c468a",
+    "shard_count": 41,
+    "shard_selection": "random.Random(42).randrange(41)",
+    "selected_shard": 40,
+    "url": "https://huggingface.co/datasets/wikimedia/wikipedia/tree/ad5752b5e625abfcdeefe5ae0ad2c3721c4b2619/20231101.en",
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GFDL"
+    ],
+    "attribution": "Wikipedia contributors; per-article URLs in passages.jsonl"
+  },
+  "model": {
+    "id": "openai-community/gpt2",
+    "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"
+  },
+  "corpus_sha256": "89c8065183c1d491af0103c706d90a2de3c4097798a0756c6aecec0ecd76d1e8",
+  "passage_count": 1000,
+  "source_specification": "https://app.notion.com/p/3ef4aa3c576581478d9de382c4083d16",
+  "formula": "H = -sum_j A[i,j]*ln(A[i,j]); 0*ln(0)=0; normalized H = H/ln(i+1)",
+  "entropy_units": "nats (natural logarithm)",
+  "query_sets": {
+    "all_real": "raw: every real query i>=0; normalized: every real query i>0",
+    "experiment1_queries": "every real query i>=32, including final token",
+    "experiment2_queries": "every real query i>=32 with a real next-token target"
+  },
+  "n_queries": {
+    "all_real": {
+      "raw": 78679,
+      "normalized": 77679
+    },
+    "experiment1_queries": {
+      "raw": 46679,
+      "normalized": 46679
+    },
+    "experiment2_queries": {
+      "raw": 45679,
+      "normalized": 45679
+    }
+  },
+  "averaging": "entropy computed per query before averaging; equal weight per eligible token across passages; normalization before averaging",
+  "uniform_baseline": {
+    "all_real": {
+      "raw": 3.4790885780456233,
+      "normalized": 1.0
+    },
+    "experiment1_queries": {
+      "raw": 4.116910190362618,
+      "normalized": 1.0
+    },
+    "experiment2_queries": {
+      "raw": 4.113200736195578,
+      "normalized": 1.0
+    }
+  },
+  "indexing": "zero-based layers and heads",
+  "batch_size": 16,
+  "weight_dtype": "torch.float16",
+  "attention_dtype": "torch.float32",
+  "accumulation_dtype": "torch.float64",
+  "diagnostics": {
+    "max_row_sum_error": 4.76837158203125e-07,
+    "max_future_attention": 0.0,
+    "max_padding_attention": 0.0,
+    "min_entropy": -0.0,
+    "max_entropy_above_uniform": 1.904654323148236e-09,
+    "finite_entropy": true
+  },
+  "rankings": {
+    "raw/all_real": {
+      "focused": [
+        {
+          "layer": 4,
+          "head": 11,
+          "mean_entropy": 0.005403364248529931
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "mean_entropy": 0.12433083195532381
+        },
+        {
+          "layer": 7,
+          "head": 2,
+          "mean_entropy": 0.1729702118900749
+        },
+        {
+          "layer": 6,
+          "head": 9,
+          "mean_entropy": 0.24837103998423046
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "mean_entropy": 0.35298617779497354
+        }
+      ],
+      "broad": [
+        {
+          "layer": 0,
+          "head": 11,
+          "mean_entropy": 3.347442558020553
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "mean_entropy": 3.334905724293848
+        },
+        {
+          "layer": 1,
+          "head": 8,
+          "mean_entropy": 3.2818250381539107
+        },
+        {
+          "layer": 1,
+          "head": 7,
+          "mean_entropy": 3.251061560210886
+        },
+        {
+          "layer": 1,
+          "head": 10,
+          "mean_entropy": 3.251035342268757
+        }
+      ]
+    },
+    "raw/experiment1_queries": {
+      "focused": [
+        {
+          "layer": 4,
+          "head": 11,
+          "mean_entropy": 0.005433376501222267
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "mean_entropy": 0.16866840408090436
+        },
+        {
+          "layer": 7,
+          "head": 2,
+          "mean_entropy": 0.22437245347106544
+        },
+        {
+          "layer": 6,
+          "head": 9,
+          "mean_entropy": 0.3380631072604718
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "mean_entropy": 0.4206659831190027
+        }
+      ],
+      "broad": [
+        {
+          "layer": 0,
+          "head": 11,
+          "mean_entropy": 3.9887372244114094
+        },
+        {
+          "layer": 1,
+          "head": 8,
+          "mean_entropy": 3.9472666974060435
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "mean_entropy": 3.9468691597974925
+        },
+        {
+          "layer": 1,
+          "head": 7,
+          "mean_entropy": 3.896615524218851
+        },
+        {
+          "layer": 1,
+          "head": 10,
+          "mean_entropy": 3.8826227948481695
+        }
+      ]
+    },
+    "raw/experiment2_queries": {
+      "focused": [
+        {
+          "layer": 4,
+          "head": 11,
+          "mean_entropy": 0.0051680183964724485
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "mean_entropy": 0.1667429140033665
+        },
+        {
+          "layer": 7,
+          "head": 2,
+          "mean_entropy": 0.22224972418510605
+        },
+        {
+          "layer": 6,
+          "head": 9,
+          "mean_entropy": 0.3364868420839155
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "mean_entropy": 0.4029715886520389
+        }
+      ],
+      "broad": [
+        {
+          "layer": 0,
+          "head": 11,
+          "mean_entropy": 3.9849809578158775
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "mean_entropy": 3.943806020314588
+        },
+        {
+          "layer": 1,
+          "head": 8,
+          "mean_entropy": 3.943635733000918
+        },
+        {
+          "layer": 1,
+          "head": 7,
+          "mean_entropy": 3.89450429457677
+        },
+        {
+          "layer": 1,
+          "head": 10,
+          "mean_entropy": 3.8796339731619995
+        }
+      ]
+    },
+    "normalized/all_real": {
+      "focused": [
+        {
+          "layer": 4,
+          "head": 11,
+          "mean_entropy": 0.001682986199975408
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "mean_entropy": 0.03294168364674812
+        },
+        {
+          "layer": 7,
+          "head": 2,
+          "mean_entropy": 0.04698565428227429
+        },
+        {
+          "layer": 6,
+          "head": 9,
+          "mean_entropy": 0.06607706738781453
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "mean_entropy": 0.09514802952392803
+        }
+      ],
+      "broad": [
+        {
+          "layer": 0,
+          "head": 11,
+          "mean_entropy": 0.9556670870772819
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "mean_entropy": 0.9512911652468372
+        },
+        {
+          "layer": 1,
+          "head": 8,
+          "mean_entropy": 0.9238263063151252
+        },
+        {
+          "layer": 1,
+          "head": 10,
+          "mean_entropy": 0.9188518609803183
+        },
+        {
+          "layer": 1,
+          "head": 7,
+          "mean_entropy": 0.9187632347350108
+        }
+      ]
+    },
+    "normalized/experiment1_queries": {
+      "focused": [
+        {
+          "layer": 4,
+          "head": 11,
+          "mean_entropy": 0.0013281794209543097
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "mean_entropy": 0.04039528779313945
+        },
+        {
+          "layer": 7,
+          "head": 2,
+          "mean_entropy": 0.05378405970909823
+        },
+        {
+          "layer": 6,
+          "head": 9,
+          "mean_entropy": 0.08064423739320725
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "mean_entropy": 0.10290137462872763
+        }
+      ],
+      "broad": [
+        {
+          "layer": 0,
+          "head": 11,
+          "mean_entropy": 0.9688117718259007
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "mean_entropy": 0.9599597899128768
+        },
+        {
+          "layer": 1,
+          "head": 8,
+          "mean_entropy": 0.9590194382314853
+        },
+        {
+          "layer": 1,
+          "head": 7,
+          "mean_entropy": 0.9466897629061893
+        },
+        {
+          "layer": 1,
+          "head": 10,
+          "mean_entropy": 0.9425254018853773
+        }
+      ]
+    },
+    "normalized/experiment2_queries": {
+      "focused": [
+        {
+          "layer": 4,
+          "head": 11,
+          "mean_entropy": 0.0012662185184647778
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "mean_entropy": 0.03998299249499458
+        },
+        {
+          "layer": 7,
+          "head": 2,
+          "mean_entropy": 0.05333782578500636
+        },
+        {
+          "layer": 6,
+          "head": 9,
+          "mean_entropy": 0.08036730366912669
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "mean_entropy": 0.0987487059477375
+        }
+      ],
+      "broad": [
+        {
+          "layer": 0,
+          "head": 11,
+          "mean_entropy": 0.9687705654662391
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "mean_entropy": 0.9600631244754831
+        },
+        {
+          "layer": 1,
+          "head": 8,
+          "mean_entropy": 0.9589906026255637
+        },
+        {
+          "layer": 1,
+          "head": 7,
+          "mean_entropy": 0.9470120087701562
+        },
+        {
+          "layer": 1,
+          "head": 10,
+          "mean_entropy": 0.9426200869211944
+        }
+      ]
+    }
+  },
+  "comparison_source_sha256": {
+    "relative_position.csv": "2a37c24ea2aa8b58f2f1fdb5ffc2722fe8d2526891d769f48f2f4af97bcc8058",
+    "token_class_attention.csv": "fd69705c4710426c34944b2b00eab65e89f03b262e5fc4adc7c8730b237c4b50"
+  },
+  "comparison_note": "Same corpus/model and matching query sets; Experiment 1/3 weights float16, Experiment 2 float32. These are descriptive cross-experiment comparisons.",
+  "job_id": "499426",
+  "hostname": "25a-hgpn009",
+  "device": "cuda:0",
+  "gpu": "NVIDIA H200",
+  "versions": {
+    "torch": "2.11.0+cu130",
+    "matplotlib": "3.11.2"
+  },
+  "limitations": [
+    "One of 41 English shards; not a sample across the entire snapshot",
+    "Article openings only; exclude openings shorter than 33 GPT-2 tokens",
+    "Entropy measures concentration, not causal importance for predictions."
+  ]
+}
