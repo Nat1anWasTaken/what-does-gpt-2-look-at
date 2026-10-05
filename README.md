@@ -1,6 +1,6 @@
 # What Does GPT-2 Look At? An Analysis of Attention in a Causal Language Model
 
-**Chao-Yang Tung and Sheng-Fu Tu**
+**Chao-Yang Tung and Cheng-Fu Tu**
 
 ## Abstract
 
@@ -38,7 +38,7 @@ Uniform attention over the prefix would assign 1.74% to each position on average
 
 ![Mean attention at selected backward offsets for all heads](figures/relative_position.png)
 
-*Figure 1. Mean attention at each backward offset for all 144 heads. Offset 0 is the current token.*
+_Figure 1. Mean attention at each backward offset for all 144 heads. Offset 0 is the current token._
 
 Five heads assign more than half of their attention to the current token: L0H1, L0H3, L0H4, L0H5, and L1H11. The strongest is **L0H3** at 84.91%. Two heads assign more than half to the previous token: **L2H2** (55.41%) and **L4H11** (99.86%). No head assigns more than 25% to any longer offset.
 
@@ -46,7 +46,7 @@ Previous-token heads match the BERT findings. Strong self-attention is more prom
 
 ### 3.2 Lexical no-op destinations
 
-Clark et al. argue that `[SEP]` acts as a no-op based on two observations: it receives high attention, and the loss gradient with respect to that attention is small. We apply the same test to three token classes: periods, commas, and the articles *the*, *a*, and *an*. All remaining tokens form the comparison class, *other*.
+Clark et al. argue that `[SEP]` acts as a no-op based on two observations: it receives high attention, and the loss gradient with respect to that attention is small. We apply the same test to three token classes: periods, commas, and the articles _the_, _a_, and _an_. All remaining tokens form the comparison class, _other_.
 
 For class $C$, we compute the attention mass $M_C$ and the mass $U_C$ expected under uniform attention:
 
@@ -56,23 +56,25 @@ M_C(i,h)=\sum_{j\leq i:\,x_j\in C} A^{(h)}_{x,i,j},
 U_C(i)=\frac{\#\{j\leq i:x_j\in C\}}{i+1}.
 $$
 
-Enrichment $E_C(h)=\mathbb{E}[M_C]/\mathbb{E}[U_C]$ controls for class frequency. For gradient importance, we replace BERT's masked-LM loss with GPT-2's next-token cross-entropy $L$. We then average $|\partial L/\partial A^{(h)}_{x,i,j}|$ over attention edges whose key belongs to each class, and report the result relative to *other* within the same head.
+Enrichment $E_C(h)=\mathbb{E}[M_C]/\mathbb{E}[U_C]$ controls for class frequency. For gradient importance, we replace BERT's masked-LM loss with GPT-2's next-token cross-entropy $L$. We then average $|\partial L/\partial A^{(h)}_{x,i,j}|$ over attention edges whose key belongs to each class, and report the result relative to _other_ within the same head.
 
 ![Attention to periods, commas, articles, and other tokens by layer](figures/token_class_attention.png)
 
-*Figure 2. Mean attention to each token class. Points are heads; lines are layer means.*
+_Figure 2. Mean attention to each token class. Points are heads; lines are layer means._
 
 ![Mean absolute attention-edge gradients by token class and layer](figures/token_class_gradient_importance.png)
 
-*Figure 3. Mean gradient magnitude of the loss with respect to attention, by key-token class.*
+_Figure 3. Mean gradient magnitude of the loss with respect to attention, by key-token class._
 
-| Class | Most enriched head | Attention | Uniform | Enrichment | Gradient / other |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Period | L2H6 | 19.63% | 2.65% | 7.41× | 0.241 |
-| Comma | L2H5 | 10.38% | 4.22% | 2.46× | 0.717 |
-| Articles | L7H2 | 22.40% | 7.62% | 2.94× | 0.953 |
+| Class    | Most enriched head | Attention | Uniform | Enrichment | Gradient / other |
+| -------- | ------------------ | --------: | ------: | ---------: | ---------------: |
+| Period   | L2H6               |    19.63% |   2.65% |      7.41× |            0.241 |
+| Comma    | L2H5               |    10.38% |   4.22% |      2.46× |            0.717 |
+| Articles | L7H2               |    22.40% |   7.62% |      2.94× |            0.953 |
 
-**L2H6 shows the clearest no-op-like behavior.** Its attention to periods is 7.4 times the uniform rate, while the gradient on those edges is about a quarter of the gradient on ordinary tokens. This is the same pattern Clark et al. found for `[SEP]`. The other classes provide weaker evidence. In L1H5, commas are enriched (2.33×) but receive *larger* gradients than ordinary tokens (1.18×). In the five most article-enriched heads, gradients drop only modestly (0.84–0.95×). GPT-2 therefore shows an isolated analogue of BERT's no-op behavior, not the widespread middle-layer pattern Clark et al. observed.
+**L2H6 shows the clearest no-op-like behavior.** Its attention to periods is 7.4 times the uniform rate, while the gradient on those edges is about a quarter of the gradient on ordinary tokens. This is the same pattern Clark et al. found for `[SEP]`. The other classes provide weaker evidence. In L1H5, commas are enriched (2.33×) but receive _larger_ gradients than ordinary tokens (1.18×). In the five most article-enriched heads, gradients drop only modestly (0.84–0.95×). GPT-2 therefore shows an isolated analogue of BERT's no-op behavior, not the widespread middle-layer pattern Clark et al. observed.
+
+**Periods are the closest lexical counterpart to `[SEP]`.** In BERT, `[SEP]` closes every segment, so it marks a boundary and carries little content of its own. GPT-2 has no separator token, but periods play a similar role in ordinary text: they end nearly every sentence and add little meaning beyond the boundary. Under causal attention, the periods that end earlier sentences also stay visible to every later token, whereas a document-final `<|endoftext|>` does not. Commas and articles are also frequent, but they occur inside sentences and depend on the words around them, so attention to them may still carry information. This may explain why the no-op-like pattern appears for periods but not for the other classes.
 
 ### 3.3 Focused and broad attention
 
@@ -86,21 +88,21 @@ Under causal attention, entropy is bounded by $\log(i+1)$, which grows with posi
 
 ![Raw attention entropy by layer](figures/entropy_raw.png)
 
-*Figure 4. Mean raw entropy of each head by layer. Lines are layer means.*
+_Figure 4. Mean raw entropy of each head by layer. Black points are layer means; error bars show ±1 SD across the 12 heads in each layer._
 
 ![Attention entropy normalized by visible context size](figures/entropy_normalized.png)
 
-*Figure 5. Mean entropy normalized by $\log(i+1)$.*
+_Figure 5. Mean entropy normalized by $\log(i+1)$. Error bars as in Figure 4._
 
-| Head | Normalized entropy | Behavior in §3.1–3.2 |
-| --- | ---: | --- |
-| L4H11 | 0.002 | Previous-token attention of 99.86% |
-| L5H1 | 0.033 | Article enrichment of 2.87× |
-| L7H2 | 0.047 | Article enrichment of 2.94× |
-| L6H9 | 0.066 | Article enrichment of 2.76× |
-| L0H1 | 0.095 | Self-attention of 83.02% |
-| L0H11 | 0.956 | Near-uniform at all tested offsets |
-| L0H9 | 0.951 | Broad, with a mild previous-token preference |
+| Head  | Normalized entropy | Behavior in §3.1–3.2                         |
+| ----- | -----------------: | -------------------------------------------- |
+| L4H11 |              0.002 | Previous-token attention of 99.86%           |
+| L5H1  |              0.033 | Article enrichment of 2.87×                  |
+| L7H2  |              0.047 | Article enrichment of 2.94×                  |
+| L6H9  |              0.066 | Article enrichment of 2.76×                  |
+| L0H1  |              0.095 | Self-attention of 83.02%                     |
+| L0H11 |              0.956 | Near-uniform at all tested offsets           |
+| L0H9  |              0.951 | Broad, with a mild previous-token preference |
 
 The five broadest heads all lie in layers 0–1, consistent with the broad lower-layer heads Clark et al. found in BERT. Mean normalized entropy is highest in layer 1 (0.761) and lowest in layer 7 (0.294), and it rises again in layer 11 (0.490). Raw entropy shows the same trends.
 
@@ -117,28 +119,28 @@ D(h_a,h_b)=\mathbb{E}_{x,i}\!\left[\operatorname{JS}\!\left(A^{(h_a)}_{x,i,:},A^
 \quad M=\tfrac{P+Q}{2}.
 $$
 
-We embed the 144 × 144 distance matrix in two dimensions with multidimensional scaling (MDS). The embedding preserves the original distances well: the correlation between embedded and original distances is 0.98, with Stress-1 of 0.12.
+We embed the 144 × 144 distance matrix in two dimensions with metric multidimensional scaling (MDS), using SMACOF with eight random initializations and keeping the lowest-stress solution. We use metric rather than classical MDS because JSD is not a Euclidean distance. The correlation between embedded and original distances is 0.98, so the embedding preserves the overall structure. Stress-1, the relative error in the embedded distances, is 0.12, which is only fair by Kruskal's guideline (0.1 fair, 0.2 poor; Kruskal, 1964). We therefore interpret broad regions of the embedding but not small distances between individual heads; distances in §4 are computed from the original divergences.
 
 ![MDS embedding of attention heads colored by layer](figures/mds_by_layer.png)
 
-*Figure 6. MDS embedding of all 144 heads, colored by layer.*
+_Figure 6. MDS embedding of all 144 heads, colored by layer._
 
 ![The same MDS embedding annotated by attention behavior](figures/mds_by_behavior.png)
 
-*Figure 7. The same embedding, colored by the behavioral categories of Section 3.*
+_Figure 7. The same embedding, colored by the behavioral categories of Section 3._
 
 **Layer structure.** Heads in the same layer have lower mean divergence (0.177) than heads in different layers (0.254). For 21% of heads, the nearest neighbor is in the same layer, compared with 8% expected by chance. As in BERT, heads within a layer tend to behave alike, although layers do not separate cleanly.
 
 **Behavioral structure.** We assign heads to descriptive groups. Positional groups require at least 50% attention at the target offset. Broad heads have normalized entropy of at least 0.8, and focused heads at most 0.1. Lexical groups require enrichment of at least 2×.
 
-| Behavioral group | Heads | Within-group JSD | Group-to-other JSD |
-| --- | ---: | ---: | ---: |
-| Self-attending | 5 | 0.136 | 0.511 |
-| Previous-token | 2 | 0.199 | 0.491 |
-| Broad | 16 | 0.108 | 0.325 |
-| Focused | 5 | 0.476 | 0.383 |
-| Article-enriched | 77 | 0.139 | 0.295 |
-| Punctuation-enriched | 11 | 0.248 | 0.303 |
+| Behavioral group     | Heads | Within-group JSD | Group-to-other JSD |
+| -------------------- | ----: | ---------------: | -----------------: |
+| Self-attending       |     5 |            0.136 |              0.511 |
+| Previous-token       |     2 |            0.199 |              0.491 |
+| Broad                |    16 |            0.108 |              0.325 |
+| Focused              |     5 |            0.476 |              0.383 |
+| Article-enriched     |    77 |            0.139 |              0.295 |
+| Punctuation-enriched |    11 |            0.248 |              0.303 |
 
 Self-attending, previous-token, and broad heads each form compact regions, as Clark et al. found for BERT's positional and broad heads. Focused heads do not: two heads can be equally concentrated while attending to different tokens. The exception is **L5H1 and L7H2, the closest pair of heads overall** (0.016), both of which are also close to L6H9. These three heads lie in different layers yet produce nearly identical attention distributions, so they likely implement a shared pattern. L2H6 is the only head that combines at least 2× enrichment with a gradient ratio of at most 0.5, so we cannot test whether no-op-like heads cluster.
 
@@ -166,43 +168,47 @@ Self-attending, previous-token, and broad heads each form compact regions, as Cl
 
 ## Partner Contributions
 
-*(TODO: describe each partner's contributions.)*
+**Chao-Yang Tung** wrote the codebase used for the final results and ran all four experiments. He adapted the initial plan, replacing `<|endoftext|>` with periods, commas, and articles as candidate no-op tokens and adding the gradient-based test of no-op behavior (§3.2). He also wrote the first draft of this report, including the analysis and conclusions in each section.
+
+**Cheng-Fu Tu** designed the initial experimental plan and wrote a first implementation of all four analyses, including a test that the attention weights match Hugging Face. Cheng-Fu Tu discussed the design with Chao-Yang Tung throughout and revised this report, for example, explaining why periods resemble `[SEP]` (§3.2), describing the MDS method and its fit (§4).
 
 ## References
 
-Clark, K., Khandelwal, U., Levy, O., and Manning, C. D. (2019). What does BERT look at? An analysis of BERT's attention. *Proceedings of the 2019 ACL Workshop BlackboxNLP*, 276–286.
+Clark, K., Khandelwal, U., Levy, O., and Manning, C. D. (2019). What does BERT look at? An analysis of BERT's attention. _Proceedings of the 2019 ACL Workshop BlackboxNLP_, 276–286.
 
-Conneau, A., Kruszewski, G., Lample, G., Barrault, L., and Baroni, M. (2018). What you can cram into a single $&!#* vector: Probing sentence embeddings for linguistic properties. *ACL*.
+Conneau, A., Kruszewski, G., Lample, G., Barrault, L., and Baroni, M. (2018). What you can cram into a single $&!#\* vector: Probing sentence embeddings for linguistic properties. _ACL_.
 
-Devlin, J., Chang, M.-W., Lee, K., and Toutanova, K. (2019). BERT: Pre-training of deep bidirectional Transformers for language understanding. *NAACL*.
+Devlin, J., Chang, M.-W., Lee, K., and Toutanova, K. (2019). BERT: Pre-training of deep bidirectional Transformers for language understanding. _NAACL_.
 
-Goldberg, Y. (2019). Assessing BERT's syntactic abilities. *arXiv:1901.05287*.
+Goldberg, Y. (2019). Assessing BERT's syntactic abilities. _arXiv:1901.05287_.
 
-Hewitt, J., and Manning, C. D. (2019). A structural probe for finding syntax in word representations. *NAACL*.
+Hewitt, J., and Manning, C. D. (2019). A structural probe for finding syntax in word representations. _NAACL_.
 
-Jain, S., and Wallace, B. C. (2019). Attention is not explanation. *NAACL*.
+Jain, S., and Wallace, B. C. (2019). Attention is not explanation. _NAACL_.
 
-Kovaleva, O., Romanov, A., Rogers, A., and Rumshisky, A. (2019). Revealing the dark secrets of BERT. *EMNLP*.
+Kovaleva, O., Romanov, A., Rogers, A., and Rumshisky, A. (2019). Revealing the dark secrets of BERT. _EMNLP_.
 
-Linzen, T., Dupoux, E., and Goldberg, Y. (2016). Assessing the ability of LSTMs to learn syntax-sensitive dependencies. *TACL*, 4.
+Kruskal, J. B. (1964). Multidimensional scaling by optimizing goodness of fit to a nonmetric hypothesis. _Psychometrika_, 29(1), 1–27.
 
-Michel, P., Levy, O., and Neubig, G. (2019). Are sixteen heads really better than one? *NeurIPS*.
+Linzen, T., Dupoux, E., and Goldberg, Y. (2016). Assessing the ability of LSTMs to learn syntax-sensitive dependencies. _TACL_, 4.
 
-Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., and Sutskever, I. (2019). Language models are unsupervised multitask learners. *OpenAI technical report*.
+Michel, P., Levy, O., and Neubig, G. (2019). Are sixteen heads really better than one? _NeurIPS_.
 
-Raganato, A., and Tiedemann, J. (2018). An analysis of encoder representations in Transformer-based machine translation. *BlackboxNLP*.
+Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., and Sutskever, I. (2019). Language models are unsupervised multitask learners. _OpenAI technical report_.
 
-Serrano, S., and Smith, N. A. (2019). Is attention interpretable? *ACL*.
+Raganato, A., and Tiedemann, J. (2018). An analysis of encoder representations in Transformer-based machine translation. _BlackboxNLP_.
 
-Tenney, I., Xia, P., Chen, B., Wang, A., Poliak, A., McCoy, R. T., Kim, N., Van Durme, B., Bowman, S. R., Das, D., and Pavlick, E. (2019). What do you learn from context? Probing for sentence structure in contextualized word representations. *ICLR*.
+Serrano, S., and Smith, N. A. (2019). Is attention interpretable? _ACL_.
 
-Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., and Polosukhin, I. (2017). Attention is all you need. *NeurIPS*.
+Tenney, I., Xia, P., Chen, B., Wang, A., Poliak, A., McCoy, R. T., Kim, N., Van Durme, B., Bowman, S. R., Das, D., and Pavlick, E. (2019). What do you learn from context? Probing for sentence structure in contextualized word representations. _ICLR_.
 
-Vig, J., and Belinkov, Y. (2019). Analyzing the structure of attention in a Transformer language model. *BlackboxNLP*.
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., and Polosukhin, I. (2017). Attention is all you need. _NeurIPS_.
 
-Voita, E., Talbot, D., Moiseev, F., Sennrich, R., and Titov, I. (2019). Analyzing multi-head self-attention: Specialized heads do the heavy lifting, the rest can be pruned. *ACL*.
+Vig, J., and Belinkov, Y. (2019). Analyzing the structure of attention in a Transformer language model. _BlackboxNLP_.
 
-Wiegreffe, S., and Pinter, Y. (2019). Attention is not not explanation. *EMNLP*.
+Voita, E., Talbot, D., Moiseev, F., Sennrich, R., and Titov, I. (2019). Analyzing multi-head self-attention: Specialized heads do the heavy lifting, the rest can be pruned. _ACL_.
+
+Wiegreffe, S., and Pinter, Y. (2019). Attention is not not explanation. _EMNLP_.
 
 ## Appendix: Reproduction
 
